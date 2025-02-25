@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Show Book</title>
+</head>
+<body>
+
+<h2>Информация о книге</h2>
+
+<th:block th:if="${book != null}">
+    <p><strong>Название:</strong> <span th:text="${book.title}"></span></p>
+    <p><strong>Автор:</strong> <span th:text="${book.author}"></span></p>
+    <p><strong>Год издания:</strong> <span th:text="${book.year}"></span></p>
+
+    <div th:if="${owner != null}">
+        <p><strong>Книга выдана:</strong> <span th:text="${owner.fullName}"></span></p>
+        <form th:action="@{/books/{id}/release(id=${book.id})}" method="post">
+            <input type="hidden" name="_method" value="PATCH"/>
+            <input type="submit" value="Освободить книгу"/>
+        </form>
+    </div>
+
+    <div th:if="${owner == null}">
+        <form th:action="@{/books/{id}/assign(id=${book.id})}" method="post">
+            <input type="hidden" name="_method" value="PATCH"/>
+
+            <label for="person">Выдать книгу:</label>
+            <select id="person" name="personId">
+                <option th:each="person : ${people}" th:value="${person.id}" th:text="${person.fullName}"></option>
+            </select>
+
+
+            <input type="submit" value="Выдать"/>
+        </form>
+
+    </div>
+
+    <form th:action="@{/books/{id}/edit(id=${book.id})}" method="get">
+        <input type="submit" value="Редактировать"/>
+    </form>
+
+    <form th:action="@{/books/{id}(id=${book.id})}" method="post">
+        <input type="hidden" name="_method" value="DELETE"/>
+        <input type="submit" value="Удалить"/>
+    </form>
+</th:block>
+
+<th:block th:if="${book == null}">
+    <p style="color: red;">Книга не найдена</p>
+</th:block>
+
+<br/>
+<a href="/books">Назад к списку</a>
+
+</body>
+</html>

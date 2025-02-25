@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Show Person</title>
+</head>
+<body>
+
+<h2>Информация о человеке</h2>
+
+<th:block th:if="${person != null}">
+    <p th:text="'ФИО: ' + ${person.fullName}"></p>
+    <p th:text="'Год рождения: ' + ${person.yearOfBirth}"></p>
+</th:block>
+
+<th:block th:if="${person == null}">
+    <p style="color: red;">Человек не найден</p>
+</th:block>
+
+<div th:if="${person != null}">
+    <div th:if="${books.isEmpty()}">
+        <p>Человек пока не взял ни одной книги</p>
+        <hr/>
+    </div>
+
+    <div th:if="${not books.isEmpty()}">
+        <hr/>
+        <b>Книги:</b>
+        <br/>
+        <table>
+            <tr th:each="book : ${books}">
+                <td th:text="'Название: ' + ${book.title}"></td>
+                <td th:text="'Автор: ' + ${book.author}"></td>
+                <td th:text="'Год: ' + ${book.year}"></td>
+            </tr>
+        </table>
+        <hr/>
+    </div>
+
+    <form th:action="@{/people/{id}/edit(id=${person.id})}" method="get">
+        <input type="submit" value="Редактировать"/>
+    </form>
+
+    <form th:action="@{/people/{id}(id=${person.id})}" method="post">
+        <input type="hidden" name="_method" value="delete"/>
+        <input type="submit" value="Удалить"/>
+    </form>
+</div>
+
+<br/>
+<a href="/people">Назад к списку</a>
+
+</body>
+</html>
