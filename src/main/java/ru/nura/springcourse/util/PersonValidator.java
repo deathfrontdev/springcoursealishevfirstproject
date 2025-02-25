@@ -7,11 +7,6 @@ import org.springframework.validation.Validator;
 import ru.nura.springcourse.dao.PersonDAO;
 import ru.nura.springcourse.models.Person;
 
-/**
- }
- }
- * @author Neil Alishev
- */
 @Component
 public class PersonValidator implements Validator {
     private final PersonDAO personDAO;
